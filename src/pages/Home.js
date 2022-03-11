@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import ListaCategorias from '../components/ListaCategorias';
+
 class Home extends React.Component {
   render() {
     return (
@@ -17,7 +19,7 @@ class Home extends React.Component {
             to="/Cart"
           >
             Carrinho de compras
-          </Link>
+          <ListaCategorias />
         </div>
       </>
     );
