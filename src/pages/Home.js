@@ -74,12 +74,17 @@ class Home extends React.Component {
         {productList.length <= 0
           ? <p>Nenhum produto foi encontrado</p> : (
             productList.map((product) => (
-              <CardProduct
+              <Link
+                to={ `/Details/${product.id}` }
                 key={ product.id }
-                title={ product.title }
-                price={ product.price }
-                image={ product.thumbnail }
-              />
+                data-testid="product-detail-link"
+              >
+                <CardProduct
+                  title={ product.title }
+                  price={ product.price }
+                  image={ product.thumbnail }
+                />
+              </Link>
             )))}
       </>
     );
