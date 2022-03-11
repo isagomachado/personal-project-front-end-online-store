@@ -19,6 +19,7 @@ class Home extends React.Component {
             to="/Cart"
           >
             Carrinho de compras
+          </Link>
           <ListaCategorias />
         </div>
       </>
