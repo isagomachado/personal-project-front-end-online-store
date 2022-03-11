@@ -1,6 +1,8 @@
 import React from 'react';
 import { getProductsFromCategoryAndQuery } from '../services/api';
 import CardProduct from '../components/CardProduct';
+import { Link } from 'react-router-dom';
+import ListaCategorias from '../components/ListaCategorias';
 
 class Home extends React.Component {
   constructor() {
@@ -60,6 +62,15 @@ class Home extends React.Component {
                 image={ product.thumbnail }
               />
             )))}
+        <div>
+          <Link
+            data-testid="shopping-cart-button"
+            to="/Cart"
+          >
+            Carrinho de compras
+          </Link>
+          <ListaCategorias />
+        </div>
       </>
     );
   }
