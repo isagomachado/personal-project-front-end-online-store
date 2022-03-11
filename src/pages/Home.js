@@ -1,7 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { getProductsFromCategoryAndQuery } from '../services/api';
 import CardProduct from '../components/CardProduct';
-import { Link } from 'react-router-dom';
 import ListaCategorias from '../components/ListaCategorias';
 
 class Home extends React.Component {
@@ -10,6 +10,7 @@ class Home extends React.Component {
     this.state = {
       productList: [],
       productSearch: '',
+      categorySearch: '',
     };
   }
 
@@ -19,9 +20,18 @@ class Home extends React.Component {
     });
   }
 
-  handleClick = async () => {
+  onInputChangecategory = async ({ target: { value } }) => {
     const { productSearch } = this.state;
-    const products = await getProductsFromCategoryAndQuery('', productSearch);
+    const products = await getProductsFromCategoryAndQuery(value, productSearch);
+    this.setState({
+      categorySearch: value,
+      productList: products.results,
+    });
+  }
+
+  handleClick = async () => {
+    const { productSearch, categorySearch } = this.state;
+    const products = await getProductsFromCategoryAndQuery(categorySearch, productSearch);
     this.setState({
       productList: products.results,
     });
@@ -49,6 +59,15 @@ class Home extends React.Component {
             Pesquisar
           </button>
         </div>
+        <div>
+          <Link
+            data-testid="shopping-cart-button"
+            to="/Cart"
+          >
+            Carrinho de compras
+          </Link>
+          <ListaCategorias onInputChange={ this.onInputChangecategory } />
+        </div>
         <div data-testid="home-initial-message">
           Digite algum termo de pesquisa ou escolha uma categoria.
         </div>
@@ -62,15 +81,6 @@ class Home extends React.Component {
                 image={ product.thumbnail }
               />
             )))}
-        <div>
-          <Link
-            data-testid="shopping-cart-button"
-            to="/Cart"
-          >
-            Carrinho de compras
-          </Link>
-          <ListaCategorias />
-        </div>
       </>
     );
   }
