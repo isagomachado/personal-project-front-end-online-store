@@ -1,5 +1,7 @@
 import React from 'react';
 
+import ListaCategorias from '../components/ListaCategorias';
+
 class Home extends React.Component {
   render() {
     return (
@@ -9,6 +11,9 @@ class Home extends React.Component {
         </div>
         <div data-testid="home-initial-message">
           Digite algum termo de pesquisa ou escolha uma categoria.
+        </div>
+        <div>
+          <ListaCategorias />
         </div>
       </>
     );
