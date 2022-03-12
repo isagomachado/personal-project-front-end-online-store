@@ -1,0 +1,14 @@
+.mybutton {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.on {
+  color: rgb(251, 255, 0);
+}
+
+.off {
+  color: rgb(204, 204, 204);
+}

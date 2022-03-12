@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { getProductsById } from '../services/api';
+import StarRating from '../components/StarRating';
 
 class Details extends React.Component {
   constructor() {
@@ -9,7 +10,11 @@ class Details extends React.Component {
 
     this.state = {
       myItem: '',
+      email: '',
+      review: '',
     };
+
+    this.handleInput = this.handleInput.bind(this);
   }
 
   componentDidMount() {
@@ -20,8 +25,16 @@ class Details extends React.Component {
     }));
   }
 
+  handleInput({ target }) {
+    const { name, value } = target;
+
+    this.setState({
+      [name]: value,
+    });
+  }
+
   render() {
-    const { myItem } = this.state;
+    const { myItem, email, review } = this.state;
 
     return (
       <div>
@@ -35,6 +48,38 @@ class Details extends React.Component {
         <div>
           <p data-testid="product-detail-name">{ myItem }</p>
         </div>
+
+        {/* Req 11 */}
+        <form>
+          <input
+            type="email"
+            data-testid="product-detail-email"
+            placeholder="Email"
+            name="email"
+            value={ email }
+            onChange={ this.handleInput }
+          />
+
+          <StarRating />
+
+          <textarea
+            data-testid="product-detail-evaluation"
+            placeholder="Mensagem (opcional)"
+            rows="5"
+            name="review"
+            value={ review }
+            onChange={ this.handleInput }
+          />
+
+          <br />
+
+          <button
+            type="button"
+            data-testid="submit-review-btn"
+          >
+            Avaliar
+          </button>
+        </form>
       </div>
     );
   }
