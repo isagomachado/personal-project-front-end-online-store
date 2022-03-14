@@ -79,6 +79,8 @@ class Home extends React.Component {
                 title={ product.title }
                 price={ product.price }
                 image={ product.thumbnail }
+                cartId={ product.id }
+                productList={ productList }
               />
             )))}
       </>
