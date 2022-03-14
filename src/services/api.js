@@ -32,7 +32,7 @@ export function saveCartShops(cartProduct) {
   if (!dataSave.some((item) => item.id === cartProduct.id)) {
     localStorage.setItem('cartProducts', JSON.stringify([...dataSave, cartProduct]));
   }
-}  
+}
 
 export async function getProductsById(productId) {
   try {
