@@ -1,0 +1,21 @@
+.form-section {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 400px;
+}
+
+.reviewField {
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewField-main {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewField-fromStorage {
+  display: flex;
+}
