@@ -3,19 +3,10 @@ import PropTypes from 'prop-types';
 import { saveCartShops } from '../services/api';
 
 export default class CardProduct extends React.Component {
-  // constructor() {
-  //   super();
-  // //   this.state = {
-  // //     cartProducts: [],
-  // //   };
-  // }
-
-  buttonClick = async ({ target }) => {
+  buttonClick = ({ target }) => {
     const { productList } = this.props;
-    // const { cartProducts } = this.state;
-    // console.log(productList);
-    const cardProduct = productList.filter((product) => product.id === target.id);
-    await saveCartShops(cardProduct[0]);
+    const cardProduct = productList.find((product) => product.id === target.id);
+    saveCartShops(cardProduct);
   }
 
   render() {

@@ -22,13 +22,13 @@ export async function getProductsFromCategoryAndQuery(categoryId, query) {
   }
 }
 
-export async function getCartShops() {
-  const data = await JSON.parse(localStorage.getItem('cartProducts'));
+export function getCartShops() {
+  const data = JSON.parse(localStorage.getItem('cartProducts'));
   return data;
 }
 
-export async function saveCartShops(cartProduct) {
-  const dataSave = await getCartShops();
+export function saveCartShops(cartProduct) {
+  const dataSave = getCartShops();
   if (!dataSave.some((item) => item.id === cartProduct.id)) {
     localStorage.setItem('cartProducts', JSON.stringify([...dataSave, cartProduct]));
   }
