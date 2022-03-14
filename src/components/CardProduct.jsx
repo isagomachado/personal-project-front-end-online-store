@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { saveCartShops } from '../services/api';
 
 export default class CardProduct extends React.Component {
@@ -15,15 +16,21 @@ export default class CardProduct extends React.Component {
       price,
       image,
       cartId,
+      id,
     } = this.props;
 
     return (
       <div data-testid="product">
-        <div>
-          <img src={ image } alt={ title } />
-          <p>{title}</p>
-          <p>{price}</p>
-        </div>
+        <Link
+          to={ `/Details/${id}` }
+          data-testid="product-detail-link"
+        >
+          <div>
+            <img src={ image } alt={ title } />
+            <p>{title}</p>
+            <p>{price}</p>
+          </div>
+        </Link>
         <div>
           <button
             data-testid="product-add-to-cart"
