@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { getProductsById } from '../services/api';
+import { getProductsById, saveCartShops } from '../services/api';
 import '../components/StarRating.css';
 import './Details.css';
 // import StarRating from '../components/StarRating';
@@ -93,6 +93,13 @@ class Details extends React.Component {
     );
   }
 
+  buttonClick = () => {
+    const { myItem } = this.state;
+    const item = myItem;
+    item.Quantidade = 1;
+    saveCartShops(item);
+  }
+
   render() {
     const {
       myItem,
@@ -103,6 +110,7 @@ class Details extends React.Component {
       allReviews,
       loading,
       isDisabled,
+      myId,
     } = this.state;
 
     return (
@@ -111,11 +119,22 @@ class Details extends React.Component {
           <h3>&#8617;</h3>
         </Link>
         <Link to="/Cart">
-          <i className="fa fa-shopping-cart" />
+          <i
+            className="fa fa-shopping-cart"
+            data-testid="shopping-cart-button"
+          />
         </Link>
 
         <div>
           <p data-testid="product-detail-name">{ myItem.title }</p>
+          <button
+            data-testid="product-detail-add-to-cart"
+            type="button"
+            onClick={ this.buttonClick }
+            id={ myId }
+          >
+            Adicionar ao carrinho
+          </button>
         </div>
 
         {/* Req 11 */}
@@ -219,14 +238,6 @@ Details.propTypes = {
       id: PropTypes.string,
     }),
   }),
-};
-
-Details.defaultProps = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      id: '',
-    }),
-  }),
-};
+}.isRequire;
 
 export default Details;
