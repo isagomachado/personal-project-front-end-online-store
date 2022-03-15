@@ -43,3 +43,17 @@ export async function getProductsById(productId) {
     return error;
   }
 }
+
+export function removeProduct(id) {
+  const products = getCartShops();
+  localStorage.setItem('cartProducts', JSON.stringify([]));
+  if (products.length > 1) {
+    saveCartShops(...products.filter((product) => product.id !== id));
+  } else {
+    localStorage.setItem('cartProducts', JSON.stringify([]));
+  }
+}
+
+export function upDateProduct(productList) {
+  localStorage.setItem('cartProducts', JSON.stringify(productList));
+}
