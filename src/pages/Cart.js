@@ -1,12 +1,16 @@
 import React from 'react';
-import { getCartShops } from '../services/api';
+import { getCartShops, removeProduct, upDateProduct } from '../services/api';
 
 class Cart extends React.Component {
   constructor() {
     super();
+
+    this.removeProduto = this.removeProduto.bind(this);
+    this.adicionaProduto = this.adicionaProduto.bind(this);
+    this.subtraiProduto = this.subtraiProduto.bind(this);
+
     this.state = {
       cartProducts: [],
-      productQuantity: 1,
     };
   }
 
@@ -17,15 +21,79 @@ class Cart extends React.Component {
     });
   }
 
+  adicionaProduto({ target }) {
+    const { cartProducts } = this.state;
+    const products = cartProducts;
+    products.forEach((product) => {
+      if (product.id === target.parentElement.id) {
+        product.Quantidade += 1;
+      }
+    });
+    upDateProduct(products);
+    const item = getCartShops();
+    this.setState({
+      cartProducts: item,
+    });
+  }
+
+  subtraiProduto({ target }) {
+    const { cartProducts } = this.state;
+    const products = cartProducts;
+    products.forEach((product) => {
+      if (product.id === target.parentElement.id && product.Quantidade > 0) {
+        product.Quantidade -= 1;
+      }
+    });
+    upDateProduct(products);
+    const item = getCartShops();
+    this.setState({
+      cartProducts: item,
+    });
+  }
+
+  removeProduto({ target }) {
+    removeProduct(target.parentElement.id);
+    const item = getCartShops();
+    this.setState({
+      cartProducts: item,
+    });
+  }
+
   render() {
-    const { cartProducts, productQuantity } = this.state;
+    const { cartProducts } = this.state;
+
     return (
       <div>
         { cartProducts.length > 0
           ? cartProducts.map((item) => (
-            <div key={ item.id }>
+            <div key={ item.id } id={ item.id }>
+              <button
+                type="button"
+                onClick={ this.removeProduto }
+              >
+                X
+              </button>
               <p data-testid="shopping-cart-product-name">{item.title}</p>
-              <p data-testid="shopping-cart-product-quantity">{productQuantity}</p>
+              <button
+                type="button"
+                data-testid="product-decrease-quantity"
+                onClick={ this.subtraiProduto }
+              >
+                -
+              </button>
+              <p data-testid="shopping-cart-product-quantity">{item.Quantidade}</p>
+              <button
+                type="button"
+                data-testid="product-increase-quantity"
+                onClick={ this.adicionaProduto }
+              >
+                +
+              </button>
+              <p>
+                {
+                  (item.price) * item.Quantidade
+                }
+              </p>
             </div>))
           : (<h2 data-testid="shopping-cart-empty-message">Seu carrinho está vazio</h2>)}
       </div>
