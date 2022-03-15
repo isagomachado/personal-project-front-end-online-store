@@ -16,13 +16,12 @@ export default class CardProduct extends React.Component {
       price,
       image,
       cartId,
-      id,
     } = this.props;
 
     return (
       <div data-testid="product">
         <Link
-          to={ `/Details/${id}` }
+          to={ `/Details/${cartId}` }
           data-testid="product-detail-link"
         >
           <div>
