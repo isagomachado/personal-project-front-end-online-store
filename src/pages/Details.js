@@ -18,6 +18,7 @@ class Details extends React.Component {
 
     this.state = {
       myItem: '',
+      myId: '',
       email: '',
       review: '',
       defaultArray: [...Array(numberForDefaultArray)],
@@ -34,14 +35,16 @@ class Details extends React.Component {
   componentDidMount() {
     const { match: { params: { id } } } = this.props;
 
-    getProductsById(id).then(({ title }) => this.setState({
-      myItem: title,
+    getProductsById(id).then((product) => this.setState({
+      myItem: product,
+      myId: product.id,
     }));
 
     const getLocal = JSON.parse(localStorage.getItem('reviews'));
+    const filterGetLocal = getLocal.filter((reviews) => reviews.myId === id);
 
     this.setState({
-      allReviews: getLocal,
+      allReviews: filterGetLocal,
     });
   }
 
@@ -61,12 +64,13 @@ class Details extends React.Component {
   }
 
   handleSubmitClick() {
-    const { email, currRating, review, allReviews } = this.state;
+    const { email, currRating, review, myId } = this.state;
 
     const currReview = {
       email,
       currRating,
       review,
+      myId,
     };
 
     // const checkItemReviews = JSON.parse(localStorage.getItem('reviews'));
@@ -74,11 +78,13 @@ class Details extends React.Component {
     this.setState(
       { loading: true },
       () => {
-        localStorage.setItem('reviews', JSON.stringify([...allReviews, currReview]));
         const getTest = JSON.parse(localStorage.getItem('reviews'));
+        localStorage.setItem('reviews', JSON.stringify([...getTest, currReview]));
+        const getNewTest = JSON.parse(localStorage.getItem('reviews'));
+        const filterGetNewTest = getNewTest.filter((reviews) => reviews.myId === myId);
         this.setState({
           loading: false,
-          allReviews: getTest,
+          allReviews: filterGetNewTest,
           email: '',
           currRating: undefined,
           review: '',
@@ -109,7 +115,7 @@ class Details extends React.Component {
         </Link>
 
         <div>
-          <p data-testid="product-detail-name">{ myItem }</p>
+          <p data-testid="product-detail-name">{ myItem.title }</p>
         </div>
 
         {/* Req 11 */}
