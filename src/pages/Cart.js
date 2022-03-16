@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { getCartShops, removeProduct, upDateProduct } from '../services/api';
 
 class Cart extends React.Component {
@@ -96,6 +97,12 @@ class Cart extends React.Component {
               </p>
             </div>))
           : (<h2 data-testid="shopping-cart-empty-message">Seu carrinho está vazio</h2>)}
+        <Link
+          data-testid="checkout-products"
+          to="/Checkout"
+        >
+          <button type="button">Finalizar</button>
+        </Link>
       </div>
     );
   }
