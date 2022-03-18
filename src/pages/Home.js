@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getProductsFromCategoryAndQuery } from '../services/api';
+import { getCartShops, getProductsFromCategoryAndQuery } from '../services/api';
 import CardProduct from '../components/CardProduct';
 import ListaCategorias from '../components/ListaCategorias';
 
@@ -11,7 +11,27 @@ class Home extends React.Component {
       productList: [],
       productSearch: '',
       categorySearch: '',
+      shoppingCartProducts: 0,
     };
+
+    this.getCartItensFromStorage = this.getCartItensFromStorage.bind(this);
+  }
+
+  componentDidMount() {
+    this.getCartItensFromStorage();
+  }
+
+  getCartItensFromStorage() {
+    const getCartItens = getCartShops();
+    const getCartItensQnty = getCartItens
+      .reduce((acc, item) => {
+        acc += item.Quantidade;
+        return acc;
+      }, 0);
+
+    this.setState({
+      shoppingCartProducts: getCartItensQnty,
+    });
   }
 
   onInputChange = ({ target: { value } }) => {
@@ -41,6 +61,7 @@ class Home extends React.Component {
     const {
       productList,
       productSearch,
+      shoppingCartProducts,
     } = this.state;
     return (
       <>
@@ -65,6 +86,7 @@ class Home extends React.Component {
             to="/Cart"
           >
             Carrinho de compras
+            <span data-testid="shopping-cart-size">{ shoppingCartProducts }</span>
           </Link>
           <ListaCategorias onInputChange={ this.onInputChangecategory } />
         </div>
@@ -81,6 +103,7 @@ class Home extends React.Component {
                 image={ product.thumbnail }
                 cartId={ product.id }
                 productList={ productList }
+                getCartItensFromStorage={ this.getCartItensFromStorage }
               />
             )))}
       </>

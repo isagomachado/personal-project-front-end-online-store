@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { getProductsById, saveCartShops } from '../services/api';
+import { getProductsById, saveCartShops, getCartShops } from '../services/api';
 import '../components/StarRating.css';
 import './Details.css';
 // import StarRating from '../components/StarRating';
@@ -25,11 +25,13 @@ class Details extends React.Component {
       currRating: undefined,
       allReviews: '',
       isDisabled: true,
+      shoppingCartProducts: 0,
     };
 
     this.handleInput = this.handleInput.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleSubmitClick = this.handleSubmitClick.bind(this);
+    this.getCartItensFromStorage = this.getCartItensFromStorage.bind(this);
   }
 
   componentDidMount() {
@@ -46,6 +48,7 @@ class Details extends React.Component {
     this.setState({
       allReviews: filterGetLocal,
     });
+    this.getCartItensFromStorage();
   }
 
   handleInput({ target }) {
@@ -73,8 +76,6 @@ class Details extends React.Component {
       myId,
     };
 
-    // const checkItemReviews = JSON.parse(localStorage.getItem('reviews'));
-
     this.setState(
       { loading: true },
       () => {
@@ -93,24 +94,30 @@ class Details extends React.Component {
     );
   }
 
+  getCartItensFromStorage() {
+    const getCartItens = getCartShops();
+    const getCartItensQnty = getCartItens
+      .reduce((acc, item) => {
+        acc += item.Quantidade;
+        return acc;
+      }, 0);
+
+    this.setState({
+      shoppingCartProducts: getCartItensQnty,
+    });
+  }
+
   buttonClick = () => {
     const { myItem } = this.state;
     const item = myItem;
     item.Quantidade = 1;
     saveCartShops(item);
+    this.getCartItensFromStorage();
   }
 
   render() {
-    const {
-      myItem,
-      email,
-      review,
-      defaultArray,
-      currRating,
-      allReviews,
-      loading,
-      isDisabled,
-      myId,
+    const { myItem, email, review, defaultArray, currRating, allReviews, loading,
+      isDisabled, myId, shoppingCartProducts,
     } = this.state;
 
     return (
@@ -123,8 +130,8 @@ class Details extends React.Component {
             className="fa fa-shopping-cart"
             data-testid="shopping-cart-button"
           />
+          <span data-testid="shopping-cart-size">{ shoppingCartProducts }</span>
         </Link>
-
         <div>
           <p data-testid="product-detail-name">{ myItem.title }</p>
           <button
@@ -148,11 +155,9 @@ class Details extends React.Component {
               value={ email }
               onChange={ this.handleInput }
             />
-
             <div>
               {defaultArray.map((star, index) => {
                 index += 1;
-
                 return (
                   <button
                     type="button"
@@ -166,7 +171,6 @@ class Details extends React.Component {
                 );
               })}
             </div>
-
             <textarea
               data-testid="product-detail-evaluation"
               placeholder="Mensagem (opcional)"
@@ -175,9 +179,7 @@ class Details extends React.Component {
               value={ review }
               onChange={ this.handleInput }
             />
-
             <br />
-
             <button
               type="button"
               data-testid="submit-review-btn"
@@ -188,7 +190,6 @@ class Details extends React.Component {
             </button>
           </form>
         </div>
-
         { loading
           ? <p>Loading</p>
           : (
@@ -226,7 +227,6 @@ class Details extends React.Component {
                 : ''}
             </div>
           )}
-
       </div>
     );
   }
