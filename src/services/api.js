@@ -31,6 +31,14 @@ export function saveCartShops(cartProduct) {
   const dataSave = getCartShops();
   if (!dataSave.some((item) => item.id === cartProduct.id)) {
     localStorage.setItem('cartProducts', JSON.stringify([...dataSave, cartProduct]));
+  } else {
+    const getQnty = dataSave.map((element) => {
+      if (element.id === cartProduct.id) {
+        element.Quantidade += cartProduct.Quantidade;
+      }
+      return element;
+    });
+    localStorage.setItem('cartProducts', JSON.stringify(getQnty));
   }
 }
 

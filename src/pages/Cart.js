@@ -79,6 +79,7 @@ class Cart extends React.Component {
                 type="button"
                 data-testid="product-decrease-quantity"
                 onClick={ this.subtraiProduto }
+                disabled={ item.Quantidade <= 1 }
               >
                 -
               </button>
@@ -87,6 +88,7 @@ class Cart extends React.Component {
                 type="button"
                 data-testid="product-increase-quantity"
                 onClick={ this.adicionaProduto }
+                disabled={ item.available_quantity <= item.Quantidade }
               >
                 +
               </button>

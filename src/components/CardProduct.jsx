@@ -5,10 +5,11 @@ import { saveCartShops } from '../services/api';
 
 export default class CardProduct extends React.Component {
   buttonClick = ({ target }) => {
-    const { productList } = this.props;
+    const { productList, getCartItensFromStorage } = this.props;
     const cardProduct = productList.find((product) => product.id === target.id);
     cardProduct.Quantidade = 1;
     saveCartShops(cardProduct);
+    getCartItensFromStorage();
   }
 
   render() {
