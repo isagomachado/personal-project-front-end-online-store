@@ -103,6 +103,7 @@ class Home extends React.Component {
                 image={ product.thumbnail }
                 cartId={ product.id }
                 productList={ productList }
+                product={ product }
                 getCartItensFromStorage={ this.getCartItensFromStorage }
               />
             )))}

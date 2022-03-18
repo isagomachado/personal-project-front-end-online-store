@@ -18,6 +18,7 @@ export default class CardProduct extends React.Component {
       price,
       image,
       cartId,
+      product,
     } = this.props;
 
     return (
@@ -28,6 +29,8 @@ export default class CardProduct extends React.Component {
         >
           <div>
             <img src={ image } alt={ title } />
+            { product.shipping.free_shipping
+            && <span data-testid="free-shipping">Frete Grátis</span> }
             <p>{title}</p>
             <p>{price}</p>
           </div>

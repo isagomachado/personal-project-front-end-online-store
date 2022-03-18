@@ -26,6 +26,7 @@ class Details extends React.Component {
       allReviews: '',
       isDisabled: true,
       shoppingCartProducts: 0,
+      freeShipping: false,
     };
 
     this.handleInput = this.handleInput.bind(this);
@@ -40,6 +41,7 @@ class Details extends React.Component {
     getProductsById(id).then((product) => this.setState({
       myItem: product,
       myId: product.id,
+      freeShipping: product.shipping.free_shipping,
     }));
 
     const getLocal = JSON.parse(localStorage.getItem('reviews'));
@@ -117,7 +119,7 @@ class Details extends React.Component {
 
   render() {
     const { myItem, email, review, defaultArray, currRating, allReviews, loading,
-      isDisabled, myId, shoppingCartProducts,
+      isDisabled, myId, shoppingCartProducts, freeShipping,
     } = this.state;
 
     return (
@@ -134,6 +136,8 @@ class Details extends React.Component {
         </Link>
         <div>
           <p data-testid="product-detail-name">{ myItem.title }</p>
+          { freeShipping
+            && <span data-testid="free-shipping">Frete Grátis</span> }
           <button
             data-testid="product-detail-add-to-cart"
             type="button"
@@ -199,10 +203,8 @@ class Details extends React.Component {
                   <div key={ firstIndex } className="reviewField-main">
                     <div className="reviewField-fromStorage">
                       <p>{ reviews.email }</p>
-
                       {defaultArray.map((star, index) => {
                         index += 1;
-
                         return (
                           <div
                             key={ index }
@@ -217,7 +219,6 @@ class Details extends React.Component {
                           </div>
                         );
                       })}
-
                     </div>
                     <div>
                       <p>{ reviews.review }</p>
